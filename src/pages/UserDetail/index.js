@@ -48,7 +48,7 @@ const UserDetail = () => {
         const token = localStorage.getItem("dm_token")
 
         axios
-        .post(`http://185.100.67.103/api/user/information//${userId}`, {
+        .post(`http://185.100.67.103/api/user/information/${userId}`, {
             activity, birth, email, gender, height, id , name, phone_number, weight
         }, {
             headers: {
@@ -155,7 +155,6 @@ const UserDetail = () => {
                             onChange={e => setHeight(e.target.valueAsNumber)}
                         />
                     </div>
-                    {console.log(typeof(weight))}
                     <div className='buttons'>
                         <Link to="/users"><IoArrowBackCircleSharp className='form__link'/></Link>
                         <button type="submit" className='form__button'>Изменить</button>

@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import axios from 'axios'
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { toast } from "react-toastify"
 import {Link} from "react-router-dom"
 import { IoArrowBackCircleSharp } from "react-icons/io5";
 
 const AddLesson=()=>{
+    const fileInput = useRef(null)
     const [name, setName] = useState("")
     const [title,setTitle]=useState("");
     const [description, setDescription]=useState("")
@@ -14,58 +15,30 @@ const AddLesson=()=>{
     const [duration, setDuration]=useState("")
 
     const navigate = useNavigate()
-
+    const {courseId} = useParams()
 
     const handleAddLesson = (e) => {
         e.preventDefault()
-        if (!title.trim()) {
-            alert("Заполните название урока!")
-            return
-          }
       
-          if (!name.trim()) {
-            alert("Заполните имя урока!")
-            return
-          }
-      
-          if (!description.trim()) {
-            alert("Заполните описание урока!")
-            return
-          }
-          if (!video_src.trim()) {
-            alert("Выложите ссылку на видео!")
-            return
-          }
-      
-          if (!duration.trim()) {
-            alert("Заполните длительность урока!")
-            return
-          }
-      
-          if (!image_src.trim()) {
-            alert("Выложите картинку!")
-            return
-          }
-
-      
-        const formDate=new FormData()
+        const formDate = new FormData()
         formDate.append('title', title)
         formDate.append('name', name)
         formDate.append('description', description)
         formDate.append('video_src', video_src)
-        formDate.append('image_src', image_src)
+        formDate.append('image_src', fileInput.current.files[0])
         formDate.append('duration', duration)
         const token = localStorage.getItem("dm_token")
-
+        console.log(formDate)
 		axios
-			.post(`http://185.100.67.103/api/course/:courseId/lessons`, formDate, {
+			.post(`http://185.100.67.103/api/course/${courseId}/lessons`, formDate, {
                 headers: {
 					Authorization: `Bearer ${token}`,
+                    "Content-type" : "multipart/form-data"
 				},
 			})
 			.then(result => {
                 console.log(result)
-                navigate("/courses")
+                //navigate("/courses")
                 toast.success("Урок успешно создан");
 			})
 			.catch(error => {
@@ -120,13 +93,13 @@ const AddLesson=()=>{
                         />
                     </div>
                     <div className="form_box">
-                        <label for="image" className="form_label">Выложите картинку</label>
-                        <img src={image_src}/>   
+                        <label for="image" className="form_label">Выложите картинку</label>  
                         <input
                             className="input"
                             name="image"
                             type="file"
                             onChange={e => setImage_src((e.target.files[0]))}
+                            ref={fileInput}
                         />
                     </div>
                     <div className="form_box">
@@ -134,13 +107,13 @@ const AddLesson=()=>{
                         <input
                             className="input"
                             name="duration"
-                            type="number"
+                            type="text"
                             value={duration}
-                            onChange={e => setDuration(e.target.valueAsNumber)}
+                            onChange={e => setDuration(e.target.value)}
                         />
                     </div>
                     <div className='buttons'>
-                        <Link to="/courses/courseId"><IoArrowBackCircleSharp className='form__link'/></Link>
+                        <Link to={`/courses/${courseId}`}><IoArrowBackCircleSharp className='form__link'/></Link>
                         <button type="submit" className='form__button'>Создать</button>
                     </div>
                 </form>

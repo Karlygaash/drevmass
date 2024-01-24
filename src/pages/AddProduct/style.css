@@ -61,8 +61,6 @@
 
 .form__createProduct{
     margin-top: 50px;
-    display: grid;
-    grid-template-columns: 400px 400px;
     column-gap: 100px
 }
 

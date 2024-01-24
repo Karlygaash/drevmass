@@ -19,6 +19,7 @@ import UserDetail from './pages/UserDetail';
 import CourseDetail from './pages/CourseDetail';
 import AddLesson from './pages/AddLesson';
 import Contacts from './pages/Contacts';
+import AddPromocode from './pages/AddPromocode'
 
 function App() {
   const router=createBrowserRouter([
@@ -54,7 +55,7 @@ function App() {
           element: <CourseDetail/>
         },
         {
-          path: "/courses/:courseId/lesson",
+          path: "/courses/:courseId/addLesson",
           element: <AddLesson/>
         },
         {
@@ -88,6 +89,10 @@ function App() {
         {
           path: "/promocode",
           element: <Promocode/>
+        },
+        {
+          path: "/promocode/add",
+          element: <AddPromocode/>
         },
         {
           path: "/contacts",

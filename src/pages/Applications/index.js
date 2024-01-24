@@ -37,11 +37,12 @@ const Applications = () =>{
             <table>
                 <thead>
                     <tr>
-                        <th>id</th>
-                        <th>Цена</th>
-                        <th>Покупатели</th>
-                        <th>Изменить</th>
-                        <th>Удалить</th>
+                        <th>Новые заявки</th>
+                        <th>Сумма</th>
+                        <th>Покупатель</th>
+                        <th>Время заявки</th>
+                        <th>Статус</th>
+                        <th>AmoCRM</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -50,9 +51,10 @@ const Applications = () =>{
                             <td>#</td>
                             <td>{element.total_price}</td>
                             <td>{element.username}</td>
-             
-                            <td><Link to={`/products/${element.id}`} className='link_edit'></Link></td>
-                            <td></td>
+                            
+                            <td>Время заявки</td>
+                            <td>Статус</td>
+                            <td><Link to="" className='link_detail'>Подробнее</Link></td>
                         </tr>
                     ))}
                 </tbody>

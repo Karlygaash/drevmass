@@ -21,6 +21,7 @@ const Contacts = () => {
             .then(result => {
                 setPhone_number(result.data.number)
                 setWhatsapp(result.data.whatsapp)
+                console.log(result)
             })
             .catch(error => {
                 console.log(error)

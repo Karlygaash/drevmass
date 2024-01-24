@@ -47,12 +47,8 @@ const AddProduct=()=>{
           if (!size.trim()) {
             alert("Заполните размер товара!")
             return
-          }
+        }
 
-          if (!image_src.trim()) {
-            alert("Заполните размер товара!")
-            return
-          }
 
       
         const formDate=new FormData()
@@ -64,7 +60,7 @@ const AddProduct=()=>{
         formDate.append('height', height)
         formDate.append('size', size)
         const token = localStorage.getItem("dm_token")
-
+        console.log(formDate)
 		axios
 			.post("http://185.100.67.103/api/products/", formDate, {
                 headers: {
@@ -128,8 +124,7 @@ const AddProduct=()=>{
                         />
                     </div>
                     <div className="form_box">
-                        <label for="image" className="form_label">Картинка</label>
-                        <img src={image_src}/>   
+                        <label for="image" className="form_label">Картинка</label>  
                         <input
                             className="input"
                             name="image"

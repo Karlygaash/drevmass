@@ -5,36 +5,62 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 import { toast } from "react-toastify"
 
 const Promocode = () =>{
+    const [promocode, setPromocode] = useState([])
 
+    const getPromocode=()=>{
+        const token = localStorage.getItem("dm_token")
+        axios
+            .get("http://185.100.67.103/api/promocode", {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			})
+            .then(result => {
+                setPromocode(result.data)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
+
+    useEffect(()=>{
+        getPromocode()
+    }, [])
 
     return(
     <div className='section'>
         <div className='container'>
             <div className='header'>
                 <h1 className='title'>Промокоды</h1>
-                <Link className='add_to' to="/promocode/add">+ Добавить</Link>
+                <Link className='add_to' to="/promocode/add">Активировать промокод</Link>
             </div>
             <table>
-                {/* <thead>
+                <thead>
                     <tr>
                         <th>id</th>
-                        <th>Название</th>
-                        <th>Длительность</th>
-                        <th>Курсы</th>
-                        <th>Удалить</th>
+                        <th>Промокоды</th>
+                        <th>Описание</th>
+                        <th>Типы</th>
+                        <th>Использование</th>
+                        <th>Статус</th>
+                        <th>Дедлайны</th>
+                        <th>Цена</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {courses.map(element => (
-                        <tr key={element.id}>
-                            <td>#{element.id}</td>
-                            <td>{element.name}</td>
-                            <td>{element.duration}</td>
-                            <td><Link to={`/courses/${element.id}`} className='link_detail'>Подробнее</Link></td>
-                            <td><RiDeleteBin5Line onClick={()=>handleRemoveCourse(element.id)} className='edit_delete__buttons'/></td>
+                    {promocode.map(element => (
+                        <tr>
+                            <td>#</td>
+                            <td>{element.promocode}</td>
+                            <td>{element.description}</td>
+                            <td>{element.promo_type}</td>
+                            <td>{element.user_used}</td>
+                            <td>{element.status}</td>
+                            <td>{element.deadline}</td>
+                            <td>{element.price}</td>
                         </tr>
                     ))}
-                </tbody> */}
+                </tbody>
             </table>
         </div>
     </div>);
