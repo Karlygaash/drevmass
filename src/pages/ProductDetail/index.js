@@ -38,6 +38,8 @@ const ProductDetail = () => {
             console.log(error)
         })
     }
+    console.log(typeof image_src)
+    console.log(image_src)
 
     const handleEditProduct = (e) =>{
         e.preventDefault()
@@ -100,10 +102,9 @@ const ProductDetail = () => {
                     </div>
                     <div className="form_box">
                         <label for="description" className="form_label">Введите описание товара</label>   
-                        <input
-                            className="input"
+                        <textarea
+                            className="textarea"
                             name="description"
-                            type="text"
                             value={description}
                             onChange={e => setDescription(e.target.value)}
                         />
@@ -127,7 +128,7 @@ const ProductDetail = () => {
                             type="file"
                             onChange={e => setImage_src((e.target.files[0]))}
                         />
-                        <label>{image_src}</label>
+                        <label>{typeof image_src}</label>
                     </div>
                     <div className="form_box">
                         <label for="height" className="form_label">Введите рост товара</label>   
