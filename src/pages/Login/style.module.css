@@ -71,6 +71,10 @@
     width: 100%;
 }
 
+.input:focus{
+    outline: none;
+}
+
 .button{
     font-size: 18px;
     font-weight: 400;

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import axios from "axios"
-import './style.css'
 import { BiEdit } from "react-icons/bi";
 import {Link, useNavigate} from "react-router-dom"
 
@@ -19,7 +18,6 @@ const Support = () =>{
 			})
             .then(result => {
                 setSupport(result.data)
-                console.log(result.data)
             })
             .catch(error => {
                 console.log(error)
@@ -38,14 +36,13 @@ const Support = () =>{
         <div className='container'>
             <div className='header'>
                 <h1 className='title'>Тех. поддержка</h1>
-                <Link className='add_to' to="/courses/add">+ Добавить</Link>
             </div>
             <table>
                 <thead>
                     <tr>
                         <th>id</th>
                         <th>Почта</th>
-                        <th>Вопросы</th>
+                        <th>Ответы</th>
                         <th>Проблемы</th>
                         <th>Время</th>
                         <th>Ответить</th>
@@ -59,7 +56,7 @@ const Support = () =>{
                             <td>{element.answer_description}</td>
                             <td>{element.problem_description}</td>
                             <td>{element.send_time}</td>
-                            <td><BiEdit onClick={()=>handleProductDetail(element.id)} className='edit__button'/></td>
+                            <td><Link to={`/support/${element.id}`} className='link_edit'><BiEdit className='edit_delete__buttons'/></Link></td>
                         </tr>
                     ))}
                 </tbody>

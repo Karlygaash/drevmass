@@ -168,7 +168,7 @@ const MainLayout = () =>{
 						<div className='modalWindow__container'> 
 							<div className='modalWindow__ask'>Вы точно хотите выйти?</div>
 							<div className='modalWindow__buttons'> 
-								<button onClick={()=>setModalWindowOpen(modalWindowOpen=!modalWindowOpen)} className='button__no'>Остаться</button>
+								<button onClick={()=>setModalWindowOpen(!modalWindowOpen)} className='button__no'>Остаться</button>
 								<button onClick={removeItem} className='button__yes'>Выйти</button>
 							</div>
 						</div> 

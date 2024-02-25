@@ -73,9 +73,9 @@ const UserDetail = () => {
         <div className="section">
             <div className="container">
                 <h1>Данные о пользователе</h1>
-                <form onSubmit={handleEditUser} className='form__createProduct'>
+                <form onSubmit={handleEditUser} className='form'>
                     <div className="form_box">
-                        <label for="email" className="form_label">Введите почту</label>   
+                        <label for="email" className="form_label">Введите почту:</label>   
                         <input
                             className="input"
                             name="email"
@@ -85,7 +85,7 @@ const UserDetail = () => {
                         />
                     </div>
                     <div className="form_box">
-                        <label for="name" className="form_label">Введите имя</label>   
+                        <label for="name" className="form_label">Введите имя:</label>   
                         <input
                             className="input"
                             name="name"
@@ -95,7 +95,7 @@ const UserDetail = () => {
                         />
                     </div>
                     <div className="form_box">
-                        <label for="phone_number" className="form_label">Введите номер телефона</label>   
+                        <label for="phone_number" className="form_label">Введите номер телефона:</label>   
                         <input
                             className="input"
                             name="phone_number"
@@ -106,7 +106,7 @@ const UserDetail = () => {
                     </div>
 
                     <div className="form_box">
-                        <label for="gender" className="form_label">Пол</label>   
+                        <label for="gender" className="form_label">Пол:</label>   
                         <input
                             className="input"
                             name="gender"
@@ -116,7 +116,7 @@ const UserDetail = () => {
                         />
                     </div>
                     <div className="form_box">
-                        <label for="birth" className="form_label">Введите дата рождения</label>   
+                        <label for="birth" className="form_label">Введите дата рождения:</label>   
                         <input
                             className="input"
                             name="birth"
@@ -126,7 +126,7 @@ const UserDetail = () => {
                         />
                     </div>
                     <div className="form_box">
-                        <label for="activity" className="form_label">Введите активити</label>   
+                        <label for="activity" className="form_label">Введите активити:</label>   
                         <input
                             className="input"
                             name="activity"
@@ -136,7 +136,7 @@ const UserDetail = () => {
                         />
                     </div>
                     <div className="form_box">
-                        <label for="weight" className="form_label">Введите вес</label>   
+                        <label for="weight" className="form_label">Введите вес:</label>   
                         <input
                             className="input"
                             name="weight"
@@ -146,7 +146,7 @@ const UserDetail = () => {
                         />
                     </div>
                     <div className="form_box">
-                        <label for="height" className="form_label">Введите рост</label>   
+                        <label for="height" className="form_label">Введите рост:</label>   
                         <input
                             className="input"
                             name="height"

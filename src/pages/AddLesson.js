@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import axios from 'axios'
 import { useNavigate, useParams } from "react-router-dom"
 import { toast } from "react-toastify"
@@ -6,13 +6,27 @@ import {Link} from "react-router-dom"
 import { IoArrowBackCircleSharp } from "react-icons/io5";
 
 const AddLesson=()=>{
-    const fileInput = useRef(null)
     const [name, setName] = useState("")
     const [title,setTitle]=useState("");
     const [description, setDescription]=useState("")
     const [video_src,setVideo_src]=useState("")
     const [image_src, setImage_src]=useState('')
-    const [duration, setDuration]=useState("")
+    const [duration, setDuration]=useState()
+    const [imageURL, setImageURL] = useState()
+    const  fileReader = new FileReader()
+
+    fileReader.onloadend = () => {
+        setImageURL(fileReader.result)
+    }
+
+    const handleOnChange = (event) => {
+        event.preventDefault();
+        if(event.target.files && event.target.files.length){
+            const file=event.target.files[0]
+            setImage_src(file)
+            fileReader.readAsDataURL(file)
+        }
+    }
 
     const navigate = useNavigate()
     const {courseId} = useParams()
@@ -25,7 +39,7 @@ const AddLesson=()=>{
         formDate.append('name', name)
         formDate.append('description', description)
         formDate.append('video_src', video_src)
-        formDate.append('image_src', fileInput.current.files[0])
+        formDate.append('image_src', image_src)
         formDate.append('duration', duration)
         const token = localStorage.getItem("dm_token")
         console.log(formDate)
@@ -37,8 +51,7 @@ const AddLesson=()=>{
 				},
 			})
 			.then(result => {
-                console.log(result)
-                //navigate("/courses")
+                navigate(`/courses/${courseId}/lessons`)
                 toast.success("Урок успешно создан");
 			})
 			.catch(error => {
@@ -51,9 +64,9 @@ const AddLesson=()=>{
         <div className="section">
             <div className="container">
                 <h1>Создать новый урок</h1>
-                <form onSubmit={handleAddLesson} className='form__createProduct'>
+                <form onSubmit={handleAddLesson} className='form'>
                 <div className="form_box">
-                        <label for="name" className="form_label">Введите имя урока</label>   
+                        <label htmlFor="name" className="form_label">Введите имя урока:</label>   
                         <input
                             className="input"
                             name="name"
@@ -63,7 +76,7 @@ const AddLesson=()=>{
                         />
                     </div>
                     <div className="form_box">
-                        <label htmlFor="title" className="form_label">Введите название урока</label>   
+                        <label htmlFor="title" className="form_label">Введите название урока:</label>   
                         <input
                             className="input"
                             name="title"
@@ -73,17 +86,16 @@ const AddLesson=()=>{
                         />
                     </div>
                     <div className="form_box">
-                        <label for="description" className="form_label">Введите описание урока</label>   
-                        <input
-                            className="input"
+                        <label htmlFor="description" className="form_label">Введите описание урока:</label>   
+                        <textarea
+                            className="textarea"
                             name="description"
-                            type="text"
                             value={description}
                             onChange={e => setDescription(e.target.value)}
                         />
                     </div>
                     <div className="form_box">
-                        <label for="video" className="form_label">Введите ссылку на видео</label>   
+                        <label htmlFor="video" className="form_label">Введите ссылку на видео:</label>   
                         <input
                             className="input"
                             name="video"
@@ -93,23 +105,28 @@ const AddLesson=()=>{
                         />
                     </div>
                     <div className="form_box">
-                        <label for="image" className="form_label">Выложите картинку</label>  
+                        <label htmlFor="image" className="file-uploader__custom-button">Выбирите картинку:</label>  
                         <input
-                            className="input"
-                            name="image"
+                            className='file-uploader__upload-button'
+                            id="image"
                             type="file"
-                            onChange={e => setImage_src((e.target.files[0]))}
-                            ref={fileInput}
+                            onChange={handleOnChange}
                         />
+                        <img
+                            src={imageURL ? imageURL : ''}
+                            alt="preview"
+                            className='file-uploader__preview'
+                        />
+                        <div>{image_src ? image_src.name : ""}</div>
                     </div>
                     <div className="form_box">
-                        <label for="duration" className="form_label">Введите длительность урока</label>   
+                        <label htmlFor="duration" className="form_label">Введите длительность урока:</label>   
                         <input
                             className="input"
                             name="duration"
-                            type="text"
+                            type="number"
                             value={duration}
-                            onChange={e => setDuration(e.target.value)}
+                            onChange={e => setDuration(e.target.valueAsNumber)}
                         />
                     </div>
                     <div className='buttons'>

@@ -7,13 +7,17 @@ import { IoArrowBackCircleSharp } from "react-icons/io5";
 import { BiEdit } from "react-icons/bi";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { toast } from "react-toastify"
+import { ConfirmDialog } from "primereact/confirmdialog";
+import { confirmDialog } from 'primereact/confirmdialog';
+import 'primereact/resources/themes/md-light-indigo/theme.css'
 
 const CourseDetail = () => {
+    const [isTrue, setIsTrue] = useState(false)
     const {courseId}=useParams()
     const [name, setName]= useState("")
     const [duration, setDuration]=useState()
     const [lessons, setLessons] = useState([])
-    const navigate=useNavigate()
+    const BaseUrl = "http://45.12.74.158/"
 
     const getCourseById = () => {
         const token = localStorage.getItem("dm_token")
@@ -24,29 +28,18 @@ const CourseDetail = () => {
             }
         })
         .then(result => {
-            setName(result.data.name)
-            setDuration(result.data.duration)
+            setName(result.data.course.name)
+            setDuration(result.data.course.duration)
+            console.log(result.data)
+            if(result.data.all_lessons > 0){
+                setLessons(result.data.course.lessons)
+            }
         })
         .catch(error => {
             console.log(error)
         })
     }
 
-    const getLessonById = () => {
-        const token = localStorage.getItem("dm_token")
-        axios
-        .get(`http://185.100.67.103/api/course/${courseId}/lessons`,{
-            headers: {
-                Authorization: `Bearer ${token}`,
-            }
-        })
-        .then(result => {
-            setLessons(result.data)
-        })
-        .catch(error => {
-            console.log(error)
-        })
-    }
 
     const handleRemoveLesson = (id) => {
         const token = localStorage.getItem("dm_token")
@@ -59,17 +52,26 @@ const CourseDetail = () => {
             .then(result => {
                 console.log(result.data)
                 toast.success("Продукт успешно удален");
+                setIsTrue(true)
             })
             .catch(error => {
                 console.log(error)
             })
 
     }
+
+    const deleteLesson = (name, id) => {
+        confirmDialog({
+        message: "Вы действительно хотите удалить этого урока?",
+        header: `Удалить "${name}"?`,
+        accept: () => handleRemoveLesson(id),
+        // reject: () => rejectFunc()
+        })
+    }
     
     useEffect(()=>{
         getCourseById()
-        getLessonById()
-    }, [])
+    }, [isTrue])
 
     return (
         <div className="section">
@@ -84,10 +86,11 @@ const CourseDetail = () => {
                 <table>
                 <thead>
                     <tr>
+                        <th>id</th>
+                        <th>Фото</th>
                         <th>Имя</th>
                         <th>Название</th>
                         <th>Длительность</th>
-                        <th>Описание</th>
                         <th>Изменить</th>
                         <th>Удалить</th>
                     </tr>
@@ -95,17 +98,24 @@ const CourseDetail = () => {
                 <tbody>
                     {lessons.map(element => (
                         <tr key={element.id}>
-                            <td>#{element.name}</td>
+                            <td>{element.id}</td>
+                            <td>      
+                                <img
+                                src={`${BaseUrl}${element.image_src}`}
+                                alt="preview"
+                                className="table_image"  
+                                /> </td>
+                            <td>{element.name}</td>
                             <td>{element.title}</td>
                             <td>{element.duration}</td>
-                            <td>{element.description}</td>
-                            <td><Link to={`/courses/${courseId}/${element.id}`} className='link_edit'><BiEdit className='edit_delete__buttons'/></Link></td>
-                            <td><RiDeleteBin5Line onClick={()=>handleRemoveLesson(element.id)} className='edit_delete__buttons'/></td>
+                            <td><Link to={`/courses/${courseId}/lessons/${element.id}`} className='link_edit'><BiEdit className='edit_delete__buttons'/></Link></td>
+                            <td><RiDeleteBin5Line onClick={()=>deleteLesson(element.name, element.id)} className='edit_delete__buttons'/></td>
                         </tr>
                     ))}
                 </tbody>
             </table>
             </div>
+            <ConfirmDialog/>
         </div>
     );
 };

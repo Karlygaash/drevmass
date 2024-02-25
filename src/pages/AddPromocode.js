@@ -1,33 +1,33 @@
 import { useState } from 'react';
 import axios from "axios"
-import './style.css'
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 import {Link} from "react-router-dom"
 import { IoArrowBackCircleSharp } from "react-icons/io5";
 
-const AddCourses=()=>{
-    const [nameCourses, setNameCourses]=useState("")
+const AddPromocode = () => {
+    const [promocode, setPromocode]=useState("")
     const navigate=useNavigate()
-    const handleAddProduct = (e) => {
+    const handleAddPromocode = (e) => {
         e.preventDefault()
-        if (!nameCourses.trim()) {
-            alert("Заполните название курса!")
+        if (!promocode.trim()) {
+            alert("Заполните промокода!")
             return
         }
-      
+        const formDate=new FormData()
+        formDate.append('promocode', promocode)
         const token = localStorage.getItem("dm_token")
 
 		axios
-			.post("http://185.100.67.103/api/course", {
-                name: nameCourses}, {
+			.post("http://185.100.67.103/api/activate", {
+                promocode: promocode}, {
                 headers: {
 					Authorization: `Bearer ${token}`,
 				},
 			})
 			.then(result => {
-                navigate("/courses")
-                toast.success("Курс успешно создан");
+                navigate("/promocode")
+                toast.success("Промокод успешно создан");
                 console.log(result)
 			})
 			.catch(error => {
@@ -39,20 +39,20 @@ const AddCourses=()=>{
         <div className="section">
             <div className="container">
                 <h1>Создать новый курс</h1>
-                <form onSubmit={handleAddProduct}>
+                <form onSubmit={handleAddPromocode} className='form'>
                     <div className="form_box">
-                        <label for="name" className="form_label">Введите название курса</label>   
+                        <label for="promocode" className="form_label">Введите промокода</label>   
                         <input
                             className="input"
-                            name="name"
+                            name="promocode"
                             type="text"
-                            value={nameCourses}
-                            onChange={e => setNameCourses(e.target.value)}
+                            value={promocode}
+                            onChange={e => setPromocode(e.target.value)}
                         />
                     </div>
                     <div className='buttons'>
                         <Link to="/courses"><IoArrowBackCircleSharp className='form__link'/></Link>
-                        <button type="submit" className='form__button'>Создать</button>
+                        <button type="submit" className='form__button'>Активировать</button>
                     </div>
                 </form>
             </div>
@@ -60,4 +60,4 @@ const AddCourses=()=>{
     );
 };
 
-export default AddCourses;
+export default AddPromocode

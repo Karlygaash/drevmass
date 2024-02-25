@@ -9,6 +9,8 @@ import { IoArrowBackCircleSharp } from "react-icons/io5";
 const Contacts = () => {
     const [phone_number, setPhone_number] = useState("")
     const [whatsapp, setWhatsapp] = useState("")
+    const [vk, setVk] = useState("")
+    const [youtube, setYoutube]= useState("")
 
     const getContacts=()=>{
         const token = localStorage.getItem("dm_token")
@@ -26,6 +28,20 @@ const Contacts = () => {
             .catch(error => {
                 console.log(error)
             })
+
+        axios
+            .get("http://185.100.67.103/api/social", {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			})
+            .then(result => {
+                setVk(result.data.vk)
+                setYoutube(result.data.youtube)
+            })
+            .catch(error => {
+                console.log(error)
+            })
     }
 
     useEffect(() => {
@@ -36,16 +52,23 @@ const Contacts = () => {
             <div className='container'>
                 <div className='header'>
                     <h1 className='title'>Контакты</h1>
-                    <Link className='add_to' to="/promocode/add">+ Добавить</Link>
                 </div>
                 <div>
                     <div className='contacts'>
+                        <p className="contact">В контакте: <Link to ={vk}>{vk}</Link></p>
+                        <Link to="/setting/contacts/social"><button className='contact_button'>Изменить</button></Link>
+                    </div>
+                    <div className='contacts'>
+                        <p className="contact">Youtube: <Link to ={youtube}>{youtube}</Link></p>
+                        <Link to="/setting/contacts/social"><button className='contact_button'>Изменить</button></Link>
+                    </div>
+                    <div className='contacts'>
                         <p className="contact">Номер телефона: {phone_number}</p>
-                        <button className='contact_button'>Изменить</button>
+                        <Link to="/setting/contacts/phone"><button className='contact_button'>Изменить</button></Link>
                     </div>
                     <div className='contacts'>
                         <p className="contact">WhatsApp: {whatsapp}</p>
-                        <button className='contact_button'>Изменить</button>
+                        <Link to="/setting/contacts/whatsapp"><button className='contact_button'>Изменить</button></Link>
                     </div>
                 </div>
                 <Link to="/setting"><IoArrowBackCircleSharp className='form__link'/></Link>

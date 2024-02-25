@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import axios from "axios"
-import './style.css'
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 import {Link} from "react-router-dom"
@@ -42,19 +41,25 @@ const Applications = () =>{
                         <th>Покупатель</th>
                         <th>Время заявки</th>
                         <th>Статус</th>
-                        <th>AmoCRM</th>
+                        <th>Детали</th>
                     </tr>
                 </thead>
                 <tbody>
                     {application.map(element => (
                         <tr>
-                            <td>#</td>
+                            <td>#{element.id}</td>
                             <td>{element.total_price}</td>
                             <td>{element.username}</td>
                             
-                            <td>Время заявки</td>
-                            <td>Статус</td>
-                            <td><Link to="" className='link_detail'>Подробнее</Link></td>
+                            <td>{element.created_at}</td>
+                            <td>
+                                <select className='select'>
+                                    <option value="">Потдвержден</option>
+                                    <option value="">Оформлен</option>
+                                    <option value="">Отменен</option>
+                                </select>
+                            </td>
+                            <td><Link to={`/applications/${element.id}`} className='link_detail'>Детали</Link></td>
                         </tr>
                     ))}
                 </tbody>

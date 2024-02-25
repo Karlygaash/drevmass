@@ -1,14 +1,18 @@
 import { useEffect, useState } from 'react';
 import axios from "axios"
-import './style.css'
 import {Link, useNavigate} from "react-router-dom"
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { toast } from "react-toastify"
+import { BiEdit } from "react-icons/bi";
+import { ConfirmDialog } from 'primereact/confirmdialog';
+import { confirmDialog } from 'primereact/confirmdialog';
+import 'primereact/resources/themes/md-light-indigo/theme.css'
 
 const Courses = () =>{
     const [courses, setCourses]=useState([])
     const navigate = useNavigate()
     const [isTrue, setIsTrue] = useState(false)
+    const BaseUrl = "http://185.100.67.103"
 
     const getCourses=()=>{
         const token = localStorage.getItem("dm_token")
@@ -20,6 +24,7 @@ const Courses = () =>{
 			})
             .then(result => {
                 setCourses(result.data)
+                console.log(result.data)
             })
             .catch(error => {
                 console.log(error)
@@ -45,6 +50,15 @@ const Courses = () =>{
             })
     }
 
+    const deleteCourse = (name, id) => {
+        confirmDialog({
+        message: "Вы действительно хотите удалить этого курса?",
+        header: `Удалить курс "${name}"?`,
+        accept: () => handleRemoveCourse(id),
+        // reject: () => rejectFunc()
+        })
+    }
+
     useEffect(() => {
 		getCourses()
         setIsTrue(false)
@@ -63,6 +77,8 @@ const Courses = () =>{
                         <th>id</th>
                         <th>Название</th>
                         <th>Длительность</th>
+                        <th>Картинка</th>
+                        <th>Изменить</th>
                         <th>Курсы</th>
                         <th>Удалить</th>
                     </tr>
@@ -73,13 +89,22 @@ const Courses = () =>{
                             <td>#{element.id}</td>
                             <td>{element.name}</td>
                             <td>{element.duration}</td>
-                            <td><Link to={`/courses/${element.id}`} className='link_detail'>Подробнее</Link></td>
-                            <td><RiDeleteBin5Line onClick={()=>handleRemoveCourse(element.id)} className='edit_delete__buttons'/></td>
+                            <td>
+                            <img
+                                src={`${BaseUrl}${element.image_src}`}
+                                alt="preview"
+                                className="table_image"  
+                                /> 
+                            </td>
+                            <td><Link to={`/courses/${element.id}`} className='link_edit'><BiEdit className='edit_delete__buttons'/></Link></td>
+                            <td><Link to={`/courses/${element.id}/lessons`} className='link_detail'>Подробнее</Link></td>
+                            <td><RiDeleteBin5Line onClick={()=>deleteCourse(element.name, element.id)} className='edit_delete__buttons'/></td>
                         </tr>
                     ))}
                 </tbody>
             </table>
         </div>
+        <ConfirmDialog/>
     </div>);
 };
 

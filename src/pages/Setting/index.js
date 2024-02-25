@@ -6,10 +6,11 @@ import AmoCrm from '../../assets/setting_icons/Image5.svg'
 import Icon from '../../assets/setting_icons/Icon.svg'
 import './style.css'
 import { useNavigate } from 'react-router-dom'
+
 const Setting = () =>{
     const navigate=useNavigate();
     const handleContacts = () => {
-        navigate("/contacts")
+        navigate("/setting/contacts")
     }
 
     return(

@@ -1,14 +1,17 @@
 import { useState, useEffect } from 'react';
-import './style.css'
 import axios from 'axios';
 import { BiEdit } from "react-icons/bi";
 import {Link, useNavigate } from "react-router-dom"
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { toast } from "react-toastify"
+import { ConfirmDialog } from 'primereact/confirmdialog';
+import { confirmDialog } from 'primereact/confirmdialog';
+import 'primereact/resources/themes/md-light-indigo/theme.css'
+
 
 const Users = () =>{
     const [allUsers, setAllUsers]=useState([])
-    const navigate=useNavigate()
+    const [isTrue, setIsTrue] = useState(false)
     const getUsers=()=>{
         const token = localStorage.getItem("dm_token")
         axios
@@ -36,7 +39,7 @@ const Users = () =>{
             .then(result => {
                 console.log(result.data)
                 toast.success("Пользователь успешно удален");
-                navigate("/users")
+                setIsTrue(true)
             })
             .catch(error => {
                 console.log(error)
@@ -44,14 +47,23 @@ const Users = () =>{
     }
     useEffect(() => {
 		getUsers()
-	}, [])
+	}, [isTrue])
+
+    const deleteUser = (name, id) => {
+        confirmDialog({
+        message: "Вы действительно хотите удалить этого пользователи?",
+        header: `Удалить пользователи ${name}?`,
+        accept: () => handleRemoveUsers(id),
+        // reject: () => rejectFunc()
+        })
+    }
 
     return(
         <div className='section'>
             <div className='container'>
                 <div className='header'>
                     <h1 className='title'>Пользователи</h1>
-                    <Link className='add_to' to="/users/add">+ Добавить</Link>
+                    
                 </div>
                 <table>
                     <thead>
@@ -72,12 +84,13 @@ const Users = () =>{
                                 <td>{element.name}</td>
                                 <td>{element.phone_number}</td>
                                 <td><Link to={`/users/${element.id}`} className='link_edit'><BiEdit className='edit_delete__buttons'/></Link></td>
-                                <td><RiDeleteBin5Line onClick={()=>handleRemoveUsers(element.id)} className='edit_delete__buttons'/></td>
+                                <td><RiDeleteBin5Line onClick={()=>deleteUser(element.name, element.id)} className='edit_delete__buttons'/></td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
+            <ConfirmDialog/>
         </div>
     );
 };

@@ -20,6 +20,13 @@ import CourseDetail from './pages/CourseDetail';
 import AddLesson from './pages/AddLesson';
 import Contacts from './pages/Contacts';
 import AddPromocode from './pages/AddPromocode'
+import LessonDetail from './pages/LessonDetail';
+import EditPhone from './pages/Contacts/EditPhone';
+import EditWhatsapp from './pages/Contacts/EditWhatsapp';
+import EditSocial from './pages/Contacts/EditSocial';
+import AnswerToSupport from './pages/AnswerToSuppor';
+import EditCourse from './pages/EditCourse';
+import ApplicationDetail from './pages/ApplicationDetail';
 
 function App() {
   const router=createBrowserRouter([
@@ -43,6 +50,10 @@ function App() {
 					element: <Applications />,
 				},
         {
+					path: "/applications/:applicationId",
+					element: <ApplicationDetail/>
+				},
+        {
           path: "/courses",
           element: <Courses/>
         },
@@ -51,12 +62,20 @@ function App() {
           element: <AddCourses/>
         },
         {
-          path: "/courses/:courseId",
+          path: "/courses/:courseId/lessons",
           element: <CourseDetail/>
+        },
+        {
+          path: "/courses/:courseId",
+          element: <EditCourse/>
         },
         {
           path: "/courses/:courseId/addLesson",
           element: <AddLesson/>
+        },
+        {
+          path: "/courses/:courseId/lessons/:lessonId",
+          element: <LessonDetail/>
         },
         {
           path: "/products",
@@ -67,7 +86,7 @@ function App() {
           element: <ProductDetail/>
         },
         {
-          path: "/producs/add",
+          path: "/products/add",
           element: <AddProduct/>
         },
         {
@@ -87,6 +106,10 @@ function App() {
           element: <Support/>
         },
         {
+          path: "/support/:supportId",
+          element: <AnswerToSupport/>
+        },
+        {
           path: "/promocode",
           element: <Promocode/>
         },
@@ -95,8 +118,20 @@ function App() {
           element: <AddPromocode/>
         },
         {
-          path: "/contacts",
+          path: "/setting/contacts",
           element: <Contacts/>
+        },
+        {
+          path: "/setting/contacts/phone",
+          element: <EditPhone/>
+        },
+        {
+          path: "/setting/contacts/whatsapp",
+          element: <EditWhatsapp/>
+        },
+        {
+          path: "/setting/contacts/social",
+          element: <EditSocial/>
         },
       ]
     }

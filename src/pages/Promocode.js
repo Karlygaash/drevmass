@@ -6,6 +6,8 @@ import { toast } from "react-toastify"
 
 const Promocode = () =>{
     const [promocode, setPromocode] = useState([])
+    // const [status, setStatus] = useState("")
+    let status=""
 
     const getPromocode=()=>{
         const token = localStorage.getItem("dm_token")
@@ -49,15 +51,15 @@ const Promocode = () =>{
                 </thead>
                 <tbody>
                     {promocode.map(element => (
-                        <tr>
+                        <tr key={element.id}>
                             <td>#</td>
                             <td>{element.promocode}</td>
                             <td>{element.description}</td>
                             <td>{element.promo_type}</td>
                             <td>{element.user_used}</td>
-                            <td>{element.status}</td>
+                            <td>{status = (element.status===true) ? "Активно":"Срок истек"}</td>
                             <td>{element.deadline}</td>
-                            <td>{element.price}</td>
+                            <td>{element.price}</td> 
                         </tr>
                     ))}
                 </tbody>
